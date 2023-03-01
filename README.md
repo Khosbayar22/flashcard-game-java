@@ -12,4 +12,4 @@ Flashcard object нь асуулт, хариулт гэсэн бүтэцтэй. 
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://raw.githubusercontent.com/Khosbayar22/flashcard-game-java/test/screenshots/main-interface.png?token=GHSAT0AAAAAAB6CFBEPG6WA4UXMJSVS7CRWY77N7GA)
