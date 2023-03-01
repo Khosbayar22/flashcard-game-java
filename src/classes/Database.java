@@ -1,19 +1,19 @@
 package classes;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ConnectDatabase {
+public class Database {
     static Console console = new Console();
+    static Flashcard[] flashcards;
 
-    public Flashcard[] initDatabase() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("db.json"));
+    public void initDatabase() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("db.txt"));
         StringBuilder jsonBuilder = new StringBuilder();
         String line = reader.readLine();
 
@@ -32,15 +32,17 @@ public class ConnectDatabase {
             result[i] = new Flashcard(jsonObject.getString("answer"), jsonObject.getString("question"));
         }
 
+        Database.flashcards = result;
         reader.close();
-        return result;
     }
 
     public void updateDatabase(Flashcard[] Flashcard) throws IOException {
+        JSONArray json = new JSONArray(Flashcard);
+        FileWriter myWriter = new FileWriter("db.txt");
+        String jsonString = json.toString();
+        myWriter.write(jsonString);
+        myWriter.close();
         console.say("** Success **");
-        // FileOutputStream fileOut = new FileOutputStream(
-        // "C:\\Users\\Khosbayar\\Documents\\must\\buteelt\\lab_2b\\flashcard-game-java\\db.json");
-        // ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-        // objectOut.writeObject(Flashcard);
+        this.initDatabase();
     }
 }

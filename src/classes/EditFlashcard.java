@@ -1,20 +1,43 @@
 package classes;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import interfaces.FlashcardApp;
 
-public class EditFlashcard extends ConnectDatabase implements FlashcardApp {
-    private static LearnFlashcard learnFlashcard = new LearnFlashcard();
+public class EditFlashcard implements FlashcardApp {
+    static Console console = new Console();
 
     @Override
     public void startApp() throws IOException {
+        console.say("Input the acion ----------------");
+        console.say("+ Add");
+        console.say("Edit");
+        console.say("Delete");
+        console.say("< Back");
+        LearnFlashcard learnFlashcard = new LearnFlashcard();
+
+        String input = console.readLine().trim().toLowerCase();
+        try {
+            switch (input) {
+                case "add":
+                    this.addFlashcard();
+                    break;
+                case "edit":
+                    learnFlashcard.startApp();
+                    this.editFlashcard();
+                    break;
+                case "delete":
+                    learnFlashcard.startApp();
+                    this.deleteFlashcard();
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addFlashcard() throws IOException {
-        Flashcard[] flashcards = this.initDatabase();
+        Flashcard[] flashcards = Database.flashcards;
 
         console.say("Question: ");
         String answerString = console.readLine();
@@ -22,40 +45,56 @@ public class EditFlashcard extends ConnectDatabase implements FlashcardApp {
         String questionString = console.readLine();
 
         Flashcard newFlashcard = new Flashcard(answerString, questionString);
+
+        Flashcard[] newFlashcards = new Flashcard[flashcards.length + 1];
+
         for (int i = 0; i < flashcards.length; i++) {
-            if (flashcards[i] == null) {
-                flashcards[i] = newFlashcard;
-                break;
-            }
+            newFlashcards[i] = flashcards[i];
         }
-        this.updateDatabase(flashcards);
+
+        newFlashcards[newFlashcards.length - 1] = newFlashcard;
+        this.updateDatabase(newFlashcards);
     }
 
     public void editFlashcard() throws IOException {
-        Flashcard[] flashcards = this.initDatabase();
-        console.say("Take card to update");
-        Integer index = Integer.parseInt(console.readLine());
-        learnFlashcard.startApp();
+        Flashcard[] flashcards = Database.flashcards;
+
+        console.say("Select the card to update");
+        Integer index = Integer.parseInt(console.readLine()) - 1;
 
         console.say("Question: ");
-        String answerString = console.readLine();
-        console.say("Answer: ");
         String questionString = console.readLine();
+        console.say("Answer: ");
+        String answerString = console.readLine();
 
         Flashcard newFlashcard = new Flashcard(answerString, questionString);
         flashcards[index] = newFlashcard;
-    }
 
-    public void deleteFlashcard() throws IOException {
-        Flashcard[] flashcards = this.initDatabase();
-        console.say("Take card to delete");
-        learnFlashcard.startApp();
-        Integer index = Integer.parseInt(console.readLine());
-        for (int i = index; i < flashcards.length - 1; i++) {
-            flashcards[i] = flashcards[i + 1];
-        }
-        flashcards[flashcards.length - 1] = null;
         this.updateDatabase(flashcards);
     }
 
+    public void deleteFlashcard() {
+        Flashcard[] flashcards = Database.flashcards;
+        Flashcard[] new_flashcards = new Flashcard[flashcards.length - 1];
+
+        console.say("Select the card to delete");
+        Integer index = Integer.parseInt(console.readLine()) - 1;
+
+        for (int i = 0, k = 0; i < flashcards.length; i++) {
+            if (i != index) {
+                new_flashcards[k] = flashcards[i];
+                k++;
+            }
+        }
+        this.updateDatabase(new_flashcards);
+    }
+
+    private void updateDatabase(Flashcard[] flashcards) {
+        Database database = new Database();
+        try {
+            database.updateDatabase(flashcards);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

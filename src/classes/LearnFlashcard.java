@@ -1,19 +1,18 @@
 package classes;
 
-import java.io.IOException;
-
 import interfaces.FlashcardApp;
 
-public class LearnFlashcard extends ConnectDatabase implements FlashcardApp {
+public class LearnFlashcard implements FlashcardApp {
+    static Console console = new Console();
 
     @Override
-    public void startApp() throws IOException {
+    public void startApp() {
+        Flashcard[] flashcards = Database.flashcards;
         console.say("\nLearn (Question | Answer) ----------------");
-        Flashcard[] flashcards = this.initDatabase();
         for (int i = 0; i < flashcards.length; i++) {
             String questionString = flashcards[i].getQuestion();
             String answeString = flashcards[i].getAnswer();
-            console.say("%s: %s | %s", Integer.toString(i + 1), questionString, answeString);
+            console.say("[%s]: %s | %s", Integer.toString(i + 1), questionString, answeString);
         }
     }
 

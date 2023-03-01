@@ -5,16 +5,20 @@ import java.util.Random;
 
 import interfaces.FlashcardApp;
 
-public class PlayFlashcard extends ConnectDatabase implements FlashcardApp {
-    private Boolean shuffle = false;
-
-    public PlayFlashcard(Boolean shuffle) {
-        this.shuffle = shuffle;
-    }
+public class PlayFlashcard implements FlashcardApp {
+    static Console console = new Console();
 
     @Override
     public void startApp() throws IOException {
-        Flashcard[] flashcards = this.initDatabase();
+        console.say("Shuffle? [y/n]");
+        String option = console.readLine().trim().toLowerCase();
+        boolean confirmShuffle = option.equals("y") ? true : false;
+
+        this.play(confirmShuffle);
+    }
+
+    private void play(Boolean shuffle) throws IOException {
+        Flashcard[] flashcards = Database.flashcards;
 
         Random generator = new Random();
         Integer correct = 0;
@@ -23,7 +27,7 @@ public class PlayFlashcard extends ConnectDatabase implements FlashcardApp {
             String sequenceString = Integer.toString(i + 1);
             String questionString = "";
             String answerString = "";
-            if (this.shuffle) {
+            if (shuffle) {
                 Integer randIndex = generator.nextInt(flashcards.length - i);
                 answerString = flashcards[randIndex].getAnswer();
                 questionString = flashcards[randIndex].getQuestion();
@@ -45,4 +49,5 @@ public class PlayFlashcard extends ConnectDatabase implements FlashcardApp {
         }
         console.say("Total: %s / %s ----------------", flashcards.length, correct);
     }
+
 }
