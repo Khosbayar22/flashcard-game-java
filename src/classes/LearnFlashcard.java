@@ -3,7 +3,7 @@ package classes;
 import interfaces.FlashcardApp;
 
 public class LearnFlashcard implements FlashcardApp {
-    static Console console = new Console();
+    static LocalConsole console = new LocalConsole();
 
     @Override
     public void startApp() {

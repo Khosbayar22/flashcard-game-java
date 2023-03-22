@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Database {
-    static Console console = new Console();
+    static LocalConsole console = new LocalConsole();
     static Flashcard[] flashcards;
 
     public void initDatabase() throws IOException {

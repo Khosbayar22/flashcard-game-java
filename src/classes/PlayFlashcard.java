@@ -6,24 +6,29 @@ import java.util.Random;
 import interfaces.FlashcardApp;
 
 public class PlayFlashcard implements FlashcardApp {
-    static Console console = new Console();
+    static LocalConsole console = new LocalConsole();
 
     @Override
     public void startApp() throws IOException {
+        console.say("How many questions to answer?");
+        Integer questionNumber = Integer.parseInt(console.readLine().trim().toLowerCase());
         console.say("Shuffle? [y/n]");
         String option = console.readLine().trim().toLowerCase();
         boolean confirmShuffle = option.equals("y") ? true : false;
-
-        this.play(confirmShuffle);
+        console.say("** Good Luck, If you want to stop the game, input 'back' or 'b' keyword! **");
+        this.play(confirmShuffle, questionNumber);
     }
 
-    private void play(Boolean shuffle) throws IOException {
+    private void play(Boolean shuffle, Integer questionNumber) throws IOException {
         Flashcard[] flashcards = Database.flashcards;
 
         Random generator = new Random();
         Integer correct = 0;
 
-        for (int i = 0; i < flashcards.length; i++) {
+        for (int i = 0; i < questionNumber; i++) {
+            if (i >= flashcards.length) {
+                break;
+            }
             String sequenceString = Integer.toString(i + 1);
             String questionString = "";
             String answerString = "";
@@ -40,6 +45,9 @@ public class PlayFlashcard implements FlashcardApp {
             console.say(questionString);
 
             String question = console.readLine();
+            if (question.equals("back") || question.equals("b")) {
+                break;
+            }
             if (question.toLowerCase().equals(answerString)) {
                 console.say("** Correct! **\n");
                 correct += 1;
@@ -47,7 +55,7 @@ public class PlayFlashcard implements FlashcardApp {
                 console.say("__ Wrong! The right answer is %s __", answerString);
             }
         }
-        console.say("Total: %s / %s ----------------", flashcards.length, correct);
+        console.say("Total: %s / %s ----------------", questionNumber, correct);
     }
 
 }

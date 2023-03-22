@@ -5,7 +5,7 @@ import java.io.IOException;
 import interfaces.FlashcardApp;
 
 public class EditFlashcard implements FlashcardApp {
-    static Console console = new Console();
+    static LocalConsole console = new LocalConsole();
 
     @Override
     public void startApp() throws IOException {

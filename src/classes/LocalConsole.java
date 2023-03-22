@@ -3,7 +3,7 @@ package classes;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Console {
+public class LocalConsole {
     final private ArrayList<String> log = new ArrayList<>();
     final private Scanner scanner = new Scanner(System.in);
 
