@@ -1,6 +1,6 @@
 # Flashcard CLI (Java)
 
-Энэхүү flashcard cli програм нь жава програмчлалын хэл дээр анхлан суралцаж буй хүмүүст concept, syntax, design -ийг туршиж, сурахад тусална.
+Энэхүү simple flashcard cli програм нь Java програмчлалын хэл дээр анхлан суралцаж буй хүмүүст concept, syntax, design -ийг сурахад тусална.
 
 Flashcard object нь асуулт, хариулт гэсэн бүтэцтэй. Application нь
 
